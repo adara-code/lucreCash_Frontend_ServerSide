@@ -1,0 +1,23 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Server side frontend application of the LucreCash-App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adara-code/lucreCash_Backend.git"
+  },
+  "author": "agnes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adara-code/lucreCash_Backend/issues"
+  },
+  "homepage": "https://github.com/adara-code/lucreCash_Backend#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2"
+  }
+}

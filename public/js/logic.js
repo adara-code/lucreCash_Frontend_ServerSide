@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 const url = "http://localhost:3000"
 const form = document.getElementById('signupForm')
 if (form) {
@@ -14,7 +16,19 @@ const userSignup = () => {
     const email = document.getElementById('signup-email').value
     const password = document.getElementById('signup-password').value
 
-    console.log(`${fullnames} and ${email} are right here`)
+    axios.post(`url`, {
+        fullnames: fullnames,
+        username: username,
+        email: email,
+        password: password
+    }).then((result) => {
+        console.log(result)
+    }).catch((err) => {
+        console.log(err)
+    })
+
 }
 
-// userSignup()
+
+
+

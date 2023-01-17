@@ -17,3 +17,7 @@ body{
     background-repeat: no-repeat; 
     
 }
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 0.5; /* Firefox */
+}

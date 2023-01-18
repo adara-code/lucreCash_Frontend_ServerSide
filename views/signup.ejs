@@ -34,7 +34,7 @@
                                     <input type="text" class="form-control rounded-end-pill" id="signup-name"
                                         placeholder="Full Names">
                                 </div>
-                                
+
                                 <div class="input-group mb-4 ms-4 me-2" style="width: 300px;">
                                     <span class="input-group-text rounded-start-pill">
                                         <i class="bi bi-person-fill"></i>
@@ -96,42 +96,45 @@
                 // alert("Testing again")
                 e.preventDefault()
                 userSignup()
-                Swal.fire('Testing dialog box')
             })
         }
 
         const userSignup = () => {
-            const fullnames = document.getElementById('signup-name').value
-            const username = document.getElementById('signup-username').value
-            const email = document.getElementById('signup-email').value
-            const password = document.getElementById('signup-password').value
+            const inputFullnames = document.getElementById('signup-name').value
+            const inputUsername = document.getElementById('signup-username').value
+            const inputEmail = document.getElementById('signup-email').value
+            const inputPassword = document.getElementById('signup-password').value
 
             axios.post(`${url}/signup`, {
-                fullnames: fullnames,
-                username: username,
-                email: email,
-                password: password
+                fullnames: inputFullnames,
+                username: inputUsername,
+                email: inputEmail,
+                password: inputPassword
             }).then((result) => {
                 const info = result.data[0].message
                 console.log(result)
                 console.log(result.data[0].message)
-                if(result.data[0].message == '"fullnames" length must be at least 5 characters long'){
+                if (result.data[0].message == '"fullnames" length must be at least 5 characters long') {
                     Swal.fire(`${info}`)
-                } else if(result.data[0].message == '"username" length must be at least 3 characters long'){
+                } else if (result.data[0].message == '"username" length must be at least 3 characters long') {
                     Swal.fire(`${info}`)
-                } else if(result.data[0].message == '"email" must be a valid email'){
+                } else if (result.data[0].message == '"email" must be a valid email') {
                     Swal.fire(`${info}`)
-                } else if(result.data[0].message == '"password" length must be at least 5 characters long'){
+                } else if (result.data[0].message == '"password" length must be at least 5 characters long') {
                     Swal.fire(`${info}`)
-                } else  {
+                } else if (result.data[0].message == 'Username taken') {
+                    Swal.fire(`${info}`)
+                } else {
                     Swal.fire(
-                    'Good job!',
-                    'You are successfully registered!'
+                        'Good job.',
+                        'You are successfully registered!'
                     ).then(result => {
-                        window.location = '/login'
-                    })
+                            window.location = '/dashboard'
+                        }).catch(err => {
+                            console.log(err)
+                        })
                 }
-                
+
             }).catch((err) => {
                 console.log(err)
             })

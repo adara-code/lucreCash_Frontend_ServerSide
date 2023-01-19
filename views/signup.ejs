@@ -122,11 +122,13 @@
                     Swal.fire(`${info}`)
                 } else if (result.data[0].message == '"password" length must be at least 5 characters long') {
                     Swal.fire(`${info}`)
+                } else if (result.data[0].message == 'Email already exists') {
+                    Swal.fire(`${info}`)
                 } else if (result.data[0].message == 'Username taken') {
                     Swal.fire(`${info}`)
                 } else {
                     Swal.fire(
-                        'Good job.',
+                        'Done.',
                         'You are successfully registered!'
                     ).then(result => {
                             window.location = '/dashboard'

@@ -75,14 +75,39 @@
             // alert("It's working")
         })
         const login = () => {
-            const username = document.getElementById('login-username').value
-            const password = document.getElementById('login-password').value
+            const inputUsername = document.getElementById('login-username').value
+            const inputPassword = document.getElementById('login-password').value 
 
-            console.log(`${username} and ${password}`)
-
-            // axios.post(`${baseUrl}/login`)
+            axios.post(`${baseUrl}/login`, {
+                username : inputUsername,
+                password : inputPassword
+            }).then(rs => {
+                const message = rs.data[0].message
+                console.log(message)
+                if(message == '"username" length must be at least 3 characters long'){
+                    Swal.fire(`${message}`)
+                }else if(message == '"password" length must be at least 5 characters long'){
+                    Swal.fire(`${message}`)
+                }else if(message == "Username or Password is invalid"){
+                    Swal.fire(`${message}`)
+                }else if(message == "Username or Password is invalid"){
+                    Swal.fire(`${message}`)
+                }else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(result => {
+                            window.location = '/dashboard'
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                }
+            }).catch(err => {
+                console.log(err)
+            })
         }
-        
 
     </script>
    

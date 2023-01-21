@@ -66,12 +66,22 @@
     </section>
 
     <script>
+        const baseUrl = 'http://localhost:3000'
         const loginForm = document.getElementById('formLogin')
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault()
-            console.log("testing")
+            login()
+            // console.log("testing")
             // alert("It's working")
         })
+        const login = () => {
+            const username = document.getElementById('login-username').value
+            const password = document.getElementById('login-password').value
+
+            console.log(`${username} and ${password}`)
+
+            // axios.post(`${baseUrl}/login`)
+        }
         
 
     </script>

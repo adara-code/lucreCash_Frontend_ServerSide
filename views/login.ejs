@@ -84,9 +84,9 @@
             }).then(rs => {
                 const message = rs.data[0].message
                 console.log(message)
-                if(message == '"username" length must be at least 3 characters long'){
+                if(message == '"username" length must be at least 3 characters long' || message == '"username" is not allowed to be empty'){
                     Swal.fire(`${message}`)
-                }else if(message == '"password" length must be at least 5 characters long'){
+                }else if(message == '"password" length must be at least 5 characters long' || message == '"password" is not allowed to be empty'){
                     Swal.fire(`${message}`)
                 }else if(message == "Username or Password is invalid"){
                     Swal.fire(`${message}`)

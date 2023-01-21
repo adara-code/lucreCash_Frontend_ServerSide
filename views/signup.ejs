@@ -114,13 +114,13 @@
                 const info = result.data[0].message
                 console.log(result)
                 console.log(result.data[0].message)
-                if (result.data[0].message == '"fullnames" length must be at least 5 characters long') {
+                if (result.data[0].message == '"fullnames" length must be at least 5 characters long' || result.data[0].message == '"fullnames" is not allowed to be empty') {
                     Swal.fire(`${info}`)
-                } else if (result.data[0].message == '"username" length must be at least 3 characters long') {
+                } else if (result.data[0].message == '"username" length must be at least 3 characters long' || result.data[0].message == '"username" is not allowed to be empty') {
                     Swal.fire(`${info}`)
-                } else if (result.data[0].message == '"email" must be a valid email') {
+                } else if (result.data[0].message == '"email" must be a valid email' || result.data[0].message == '"email" is not allowed to be empty') {
                     Swal.fire(`${info}`)
-                } else if (result.data[0].message == '"password" length must be at least 5 characters long') {
+                } else if (result.data[0].message == '"password" length must be at least 5 characters long' || result.data[0].message == '"password" is not allowed to be empty') {
                     Swal.fire(`${info}`)
                 } else if (result.data[0].message == 'Email already exists') {
                     Swal.fire(`${info}`)

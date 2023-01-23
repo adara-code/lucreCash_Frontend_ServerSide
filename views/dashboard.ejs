@@ -1,1 +1,33 @@
-Touchdown!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <p>Touchdown!</p>
+    
+</body>
+</html>
+
+<script>
+    const url = 'http://localhost:3000'
+    const accessToken = localStorage.getItem("key")
+
+    const frontAuth =  axios.create({
+        baseUrl : url,
+        headers: {
+            Authorization : `Bearer ${accessToken}`
+        }
+    })
+    const result = frontAuth.post(`${url}/dashboard`).then(rs => {
+            console.log(rs)
+        }).catch(err => {
+            console.log(err)
+        })
+    // console.log(result)
+    
+</script>

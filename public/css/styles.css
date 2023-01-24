@@ -1,0 +1,23 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Moon+Dance&family=Roboto:wght@400;500;700&display=swap'); */
+
+body{
+    margin: 0;
+    padding: 0;
+    /* font-family: Roboto,Arial; */
+}
+
+
+.intro-section
+
+{
+    background-image: linear-gradient(rgba(28, 146, 210, 0.3),rgba(91, 134, 229, 0.2)), url("../img/homePage_Background_Image.jpg");
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 0.5; /* Firefox */
+}

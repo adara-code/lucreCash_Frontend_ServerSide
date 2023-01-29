@@ -30,11 +30,13 @@
                     <div class="justify-content-center align-items-center">
                         <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary" style="height: 610px;">
                             <div id="userProfile" class="border bg-primary m-3 rounded-2" style="height: 155px; width: 520px;">
+                                <%- include ('partials/addModal') %> 
+                                <%- include ('partials/editModal') %> 
                                 <p class="text-light text-center display-6 fs-3 pt-3 ps-3">Hello Shee</p>
                                 <p class="text-light text-center display-6 fs-6 pt-1 ps-3">Your Current Financial Standing : <span id="financialStatus"></span></p>
                                 <div class="d-flex justify-content-center">
-                                <button class="btn btn-warning text-light me-5" data-bs-toggle="modal" data-bs-target="#addList">Add Item</button>
-                                <button type="button" class="btn btn-warning text-light" data-bs-toggle="modal" data-bs-target="#editList">Edit Item</button>
+                                <button class="btn btn-warning text-light me-5" id="addButton" data-bs-toggle="modal" data-bs-target="#addList">Add Item</button>
+                                <button type="button" class="btn btn-warning text-light" id="editButton" data-bs-toggle="modal" data-bs-target="#editList">Edit Item</button>
                                 
                                 </div>
                             </div>

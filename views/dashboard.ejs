@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,87 +12,131 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Dashboard</title>
 </head>
+
 <body class="bg-body-secondary">
-        <section id="navBar">
-                <nav class="navbar bg-primary " style="height: 60px;">
-                    <div class="container-fluid d-flex justify-content-between align-items-center">
-                      <p class="navbar-brand fs-3 ms-1 d-inline-block text-light ">Lucre &#8208; Cash</p>
-                      <p class="text-light fs-5 ">Budget for your best life</p>
-                        <button class="btn btn-sm btn-light me-1 mb-3 py-2 ps-3 pe-3" type="button">Log Out</button> 
-                    </div>          
-                  </nav>
-        </section>
-        <!-- End of Navbar Section -->
-    
-        <!-- Profile Section -->
-        <section>
-            <div class="container">
-                <div class="row">
-                    <div class="justify-content-center align-items-center">
-                        <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary" style="height: 610px;">
-                            <div id="userProfile" class="border bg-primary m-3 rounded-2" style="height: 155px; width: 520px;">
-                                <%- include ('partials/addModal') %> 
-                                <%- include ('partials/editModal') %> 
-                                <p class="text-light text-center display-6 fs-3 pt-3 ps-3">Hello Shee</p>
-                                <p class="text-light text-center display-6 fs-6 pt-1 ps-3">Your Current Financial Standing : <span id="financialStatus"></span></p>
-                                <div class="d-flex justify-content-center">
-                                <button class="btn btn-warning text-light me-5" id="addButton" data-bs-toggle="modal" data-bs-target="#addList">Add Item</button>
-                                <button type="button" class="btn btn-warning text-light" id="editButton" data-bs-toggle="modal" data-bs-target="#editList">Edit Item</button>
-                                
-                                </div>
+    <section id="navBar">
+        <nav class="navbar bg-primary " style="height: 60px;">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <p class="navbar-brand fs-3 ms-1 d-inline-block text-light ">Lucre &#8208; Cash</p>
+                <p class="text-light fs-5 ">Budget for your best life</p>
+                <button class="btn btn-sm btn-light me-1 mb-3 py-2 ps-3 pe-3" type="button">Log Out</button>
+            </div>
+        </nav>
+    </section>
+    <!-- End of Navbar Section -->
+
+    <!-- Profile Section -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="justify-content-center align-items-center">
+                    <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary"
+                        style="height: 610px;">
+                        <div id="userProfile" class="border bg-primary m-3 rounded-2"
+                            style="height: 155px; width: 520px;">
+                            <%- include ('partials/addModal') %>
+                                <%- include ('partials/editModal') %>
+                                    <p class="text-light text-center display-6 fs-3 pt-3 ps-3">Hello Shee</p>
+                                    <p class="text-light text-center display-6 fs-6 pt-1 ps-3">Your Current Financial
+                                        Standing : <span id="financialStatus"></span></p>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-warning text-light me-5" id="addButton"
+                                            data-bs-toggle="modal" data-bs-target="#addList">Add Item</button>
+                                        <button type="button" class="btn btn-warning text-light" id="editButton"
+                                            data-bs-toggle="modal" data-bs-target="#editList">Edit Item</button>
+
+                                    </div>
+                        </div>
+                        <div class="border rounded-2 ms-3 me-3 mt-4" style="height:390px; width: 520px;">
+                            <p class="display-6 fs-5 text-primary text-center pt-3 ps-3">Your Personal Income Statement
+                            </p>
+                            <div class="d-flex justify-content-between my-2">
+                                <p class="ps-3">Personal Income </p>
+                                <p class="pe-3">Kshs. </p>
                             </div>
-                            <div class="border rounded-2 ms-3 me-3 mt-4" style="height:390px; width: 520px;">
-                                <p class="display-6 fs-5 text-primary text-center pt-3 ps-3">Your Personal Income Statement</p>
-                                <div class="d-flex justify-content-between my-2">
-                                    <p class="ps-3">Personal Income </p>
-                                    <p class="pe-3">Kshs. </p>
-                                </div>
-                                <hr>
-    
-                                <div class="d-flex justify-content-between my-2">
-                                    <p class="ps-3">Total Expenses </p>
-                                    <p class="pe-3">Kshs. </p>
-                                </div>
-                                <hr>
-    
-                                <div class="d-flex justify-content-between my-2">
-                                    <p class="ps-3">Debt Repayment </p>
-                                    <p class="pe-3">Kshs. </p>
-                                </div>
-                                <hr>
-    
-                                <div class="d-flex justify-content-between my-2">
-                                    <p class="ps-3">Your Disposable Income </p>
-                                    <p class="pe-3">Kshs. </p>
-                                </div>
+                            <hr>
+
+                            <div class="d-flex justify-content-between my-2">
+                                <p class="ps-3">Total Expenses </p>
+                                <p class="pe-3">Kshs. </p>
+                            </div>
+                            <hr>
+
+                            <div class="d-flex justify-content-between my-2">
+                                <p class="ps-3">Debt Repayment </p>
+                                <p class="pe-3">Kshs. </p>
+                            </div>
+                            <hr>
+
+                            <div class="d-flex justify-content-between my-2">
+                                <p class="ps-3">Your Disposable Income </p>
+                                <p class="pe-3">Kshs. </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    
-        </section>
-    
-    
-    
+        </div>
+
+    </section>
+
+
+
 </body>
+
 </html>
 
 <script>
     const url = 'http://localhost:3000'
     const accessToken = localStorage.getItem("key")
 
-    const frontAuth =  axios.create({
-        baseUrl : url,
+    const frontAuth = axios.create({
+        baseUrl: url,
         headers: {
-            Authorization : `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken}`
         }
     })
-    const result = frontAuth.post(`${url}/dashboard`).then(rs => {
-            console.log(rs)
+
+    const addForm = () => {
+        const addedIncome = document.getElementById('addNetIncome').value
+        const addedBills = document.getElementById('addBills').value
+        const addedDebt = document.getElementById('addDebt').value
+
+        frontAuth.post(`${url}/add`, {
+            Income: addedIncome,
+            Expenses: addedBills,
+            Debt: addedDebt
+        }).then(rs => {
+            const message = rs.data[0].message
+            if (message == '"Income" must be a number' || message == '"Income" must be greater than or equal to 100') {
+                Swal.fire(`${message}`)
+            } else if (message == '"Expenses" must be a number') {
+                Swal.fire(`${message}`)
+            } else if (message == '"Debt" must be a number') {
+                Swal.fire(`${message}`)
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Details Added',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(rs => {
+                    window.location = '/dashboard'
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
         }).catch(err => {
             console.log(err)
         })
+    }
+
+
+    const result = frontAuth.post(`${url}/dashboard`).then(rs => {
+        console.log(rs)
+    }).catch(err => {
+        console.log(err)
+    })
     // console.log(result)
-    
+
 </script>

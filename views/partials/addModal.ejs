@@ -23,24 +23,24 @@
                 <div class="modal-body">
                     <form action="">
                         <div class="d-flex justify-content-between mb-2">
-                            <label for="netIncome" class="form-label">Monthly Net Income</label>
-                            <input type="text" id="netIncome" placeholder="Kshs. 0">
+                            <label for="addNetIncome" class="form-label">Monthly Net Income</label>
+                            <input type="text" id="addNetIncome" placeholder="Kshs. 0">
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <label for="bills" class="form-label">Monthly Bills and Expenses i.e rent, utilities,
+                            <label for="addBills" class="form-label">Monthly Bills and Expenses i.e rent, utilities,
                                 transport</label>
-                            <input type="text" id="bills" placeholder="Kshs. 0">
+                            <input type="text" id="addBills" placeholder="Kshs. 0">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <label for="userDebt" class="form-label">Monthly Debt Repayment</label>
-                            <input type="text" id="userDebt" placeholder="Kshs. 0">
+                            <label for="addDebt" class="form-label">Monthly Debt Repayment</label>
+                            <input type="text" id="addDebt" placeholder="Kshs. 0">
                         </div>
                     </form>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Add Items</button>
+                    <button type="button" onclick="addForm()" class="btn btn-primary">Add Items</button>
                 </div>
             </div>
         </div>

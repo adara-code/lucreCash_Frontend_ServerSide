@@ -33,18 +33,17 @@
                     <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary"
                         style="height: 610px;">
                         <div id="userProfile" class="border bg-primary m-3 rounded-2"
-                            style="height: 155px; width: 520px;">
+                            style="height: 160px; width: 520px;">
                             <%- include ('partials/addModal') %>
                                 <%- include ('partials/editModal') %>
-                                    <p class="text-light text-center display-6 fs-3 pt-3 ps-3">Hello Shee</p>
+                                    <p id="username" class="text-light text-center display-6 fs-3 pt-3 ps-3 text-capitalize"></p>
                                     <p class="text-light text-center display-6 fs-6 pt-1 ps-3">Your Current Financial
-                                        Standing : <span id="financialStatus"></span></p>
+                                        Standing : <strong><span id="financialStatus"></strong</span></p>
                                     <div class="d-flex justify-content-center">
                                         <button class="btn btn-warning text-light me-5" id="addButton"
                                             data-bs-toggle="modal" data-bs-target="#addList">Add Item</button>
                                         <button type="button" class="btn btn-warning text-light" id="editButton"
                                             data-bs-toggle="modal" data-bs-target="#editList">Edit Item</button>
-
                                     </div>
                         </div>
                         <div class="border rounded-2 ms-3 me-3 mt-4" style="height:390px; width: 520px;">
@@ -52,25 +51,28 @@
                             </p>
                             <div class="d-flex justify-content-between my-2">
                                 <p class="ps-3">Personal Income </p>
-                                <p class="pe-3">Kshs. </p>
+                                <p id="displayIncome" class="pe-3">Kshs. </p>
                             </div>
                             <hr>
 
                             <div class="d-flex justify-content-between my-2">
                                 <p class="ps-3">Total Expenses </p>
-                                <p class="pe-3">Kshs. </p>
+                                <p id="displayBills" class="pe-3">Kshs. </p>
                             </div>
                             <hr>
 
                             <div class="d-flex justify-content-between my-2">
                                 <p class="ps-3">Debt Repayment </p>
-                                <p class="pe-3">Kshs. </p>
+                                <p id="displayDebt" class="pe-3">Kshs. </p>
                             </div>
                             <hr>
 
                             <div class="d-flex justify-content-between my-2">
                                 <p class="ps-3">Your Disposable Income </p>
-                                <p class="pe-3">Kshs. </p>
+                                <p id="displayDisposableIncome" class="pe-3">Kshs. </p>
+                            </div>
+                            <div id="status">
+
                             </div>
                         </div>
                     </div>
@@ -97,6 +99,8 @@
         }
     })
 
+    // This function takes input from the "addModal" file. And posts them on the add end-point. 
+    // Data validation is incorporated and user redirected to the dashboard. 
     const addForm = () => {
         const addedIncome = document.getElementById('addNetIncome').value
         const addedBills = document.getElementById('addBills').value
@@ -121,6 +125,7 @@
                     showConfirmButton: false,
                     timer: 1500
                 }).then(rs => {
+                    // localStorage.setItem("key", `${message}`)
                     window.location = '/dashboard'
                 }).catch(err => {
                     console.log(err)
@@ -131,12 +136,87 @@
         })
     }
 
+    const editForm = () => {
+        const editedIncome = document.getElementById('editNetIncome').value
+        const editedBills = document.getElementById('editBills').value
+        const editedDebt = document.getElementById('editDebt').value
 
-    const result = frontAuth.post(`${url}/dashboard`).then(rs => {
+        frontAuth.put(`${url}/edit`, {
+            Income: editedIncome,
+            Expenses: editedBills,
+            Debt: editedDebt
+        }).then(rs => {
+            console.log(rs)
+            const message = rs.data[0].message
+            if (message == '"Income" must be a number' || message == '"Income" must be greater than or equal to 100') {
+                Swal.fire(`${message}`)
+            } else if (message == '"Expenses" must be a number') {
+                Swal.fire(`${message}`)
+            } else if (message == '"Debt" must be a number') {
+                Swal.fire(`${message}`)
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(rs => {
+                    console.log(rs)
+                    window.location = '/dashboard'
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    
+
+    const displayData = () => {
+        frontAuth.post(`${url}/dashboard`).then(rs => {
+        const showUsername = document.getElementById('username')
+        const showIncome = document.getElementById('displayIncome')
+        const showBills = document.getElementById('displayBills')
+        const showDebt = document.getElementById('displayDebt')
+        const showDI = document.getElementById('displayDisposableIncome')
+        
+
+        const financialStatus = document.getElementById('financialStatus')
+        const status = document.getElementById('status')
+
+        showUsername.innerHTML = `Hello ${rs.data[0].username}`
+        showIncome.innerHTML =`Kshs. ${parseFloat(rs.data[0].totalIncome)}`
+        showBills.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalExpenses)}`
+        showDebt.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalDebt)}`
+
+        if(rs.data[0].disposableIncome == 0){
+            financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-4" style="color:#ffa500"></i> Average`
+            showDI.innerHTML = `<span style="color:orange">Kshs. ${parseFloat(rs.data[0].disposableIncome)}</span>`
+            status.innerHTML = `<p style = "color:orange; text-align:center">Your income and expenses are equal. Reduce expenses or increase your income.</p>`
+
+        } else if(rs.data[0].disposableIncome < 0){
+            financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-5" style="color:#ff4433"></i> On the Red`
+            showDI.innerHTML = `<span style="color:red">Negative</span>`
+            status.innerHTML = `<p style = "color:red; text-align:center">No disposable income. Readjust your expenses.</p>`
+
+        } else {
+            financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-5" style="color:#90ee90"></i> Good`
+            showDI.innerHTML = `<span style="color:green">Kshs. ${parseFloat(rs.data[0].disposableIncome)}</span>`
+            status.innerHTML = `<p style = "color:green; text-align:center">You have enough to save.</p>`
+
+        }
+        // showDI.innerHTML = `Kshs. ${parseFloat(rs.data[0].disposableIncome)}`
+
         console.log(rs)
+
     }).catch(err => {
         console.log(err)
     })
+    }
+    displayData()
+    
     // console.log(result)
 
 </script>

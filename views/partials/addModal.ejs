@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Add Details</title>
+</head>
+
+<body>
+    <!-- Add Modal -->
+    <div class="modal fade" id="addList" tabindex="-1" aria-labelledby="addList" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add your Financial Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addListForm" action="">
+                        <div class="d-flex justify-content-between mb-2">
+                            <label for="addNetIncome" class="form-label">Monthly Net Income</label>
+                            <input type="text" id="addNetIncome" placeholder="Kshs. 0">
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <label for="addBills" class="form-label">Monthly Bills and Expenses i.e rent, utilities,
+                                transport</label>
+                            <input type="text" id="addBills" placeholder="Kshs. 0">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <label for="addDebt" class="form-label">Monthly Debt Repayment</label>
+                            <input type="text" id="addDebt" placeholder="Kshs. 0">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button"  onclick="addForm()" class="btn btn-primary">Add Items</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Add Modal -->
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+<!-- onclick="addForm()" -->

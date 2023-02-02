@@ -79,9 +79,16 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Graphical Presentation -->
                 <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary">
-                    <div id="currentStatus" class="mb-2"></div>
-                    <div id="idealStatus"></div>
+                    <div class="mt-3 ps-1 py-2 " style="height: 290px;">
+                        <!-- <p class="text-primary text-center pb-2">Visual Representation of your Current Status</p> -->
+                        <canvas id="currentStatus"></canvas>
+                    </div>
+                    <div class="mt-3 ps-5 bg-dark" style=" height:286px">
+                        <canvas id="idealStatus"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,7 +101,8 @@
 
 </html>
 
-<script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script>
     // create a base url that attaches a token to every request
     const url = 'http://localhost:3000'
     const accessToken = localStorage.getItem("key")
@@ -183,6 +191,7 @@
     // displays data on the dashboard
     const displayData = () => {
         frontAuth.post(`${url}/dashboard`).then(rs => {
+            // targets the divs that display each financial item
             const showUsername = document.getElementById('username')
             const showIncome = document.getElementById('displayIncome')
             const showBills = document.getElementById('displayBills')
@@ -190,9 +199,11 @@
             const showDI = document.getElementById('displayDisposableIncome')
 
 
+            // targets the div from the profile section and from the disposable income area
             const financialStatus = document.getElementById('financialStatus')
             const status = document.getElementById('status')
 
+            // writes values received from backend
             showUsername.innerHTML = `Hello ${rs.data[0].username}`
             showIncome.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalIncome)}`
             showBills.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalExpenses)}`
@@ -214,61 +225,88 @@
                 status.innerHTML = `<p style = "color:green; text-align:center">You have enough to save.</p>`
 
             }
-            // showDI.innerHTML = `Kshs. ${parseFloat(rs.data[0].disposableIncome)}`
-
-            console.log(rs)
 
         }).catch(err => {
             console.log(err)
         })
     }
     displayData()
-</script>
-<script type="text/javascript">
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Income', 'Kshs'],
-            ['Expenses', 15000],
-            ['Debt Repayment', 5000],
-            ['Disposable Income', 10000],
 
-        ]);
 
-        var options = {
-            title: 'Visual Presentation of your Current Status',
-            pieHole: 0.3,
-            width: 500,
-            height: 300
-        };
+    const graphics = () => {
+        const vals = frontAuth.get(`${url}/graphics`).then(rs => {
+           const arr = rs.data
+           const mp = arr.map(element => {
+            return Object.values(element)
+            
+           });
+        //   console.log(currentChartData.data)
+        //   console.log(mp[0])
+        //   currentChartData.data = mp[0]
+          myChart.data.datasets[0].data = mp[0]
+        //   console.log(currentChartData.data[0])
+        // myChart.data.datasets[0].data = mp
+        console.log(myChart.data.datasets[0].data)
 
-        var chart = new google.visualization.PieChart(document.getElementById('currentStatus'));
-        chart.draw(data, options);
+       
+          myChart.update()
+        //    console.log(mp)
+        })
+        // ChartJs Setup
+    const currentChart = document.getElementById('currentStatus');
+
+const currentChartData = {
+    labels: ["Expenses", "Debt", "Disposable Income"],
+    data: [30000,10000,5000],
+};
+
+
+//    Chart configuration
+const myChart = new Chart(currentChart, {
+    type: "doughnut",
+    data: {
+        labels: currentChartData.labels,
+        datasets: [
+            {
+                label: "Financial Status",
+                data: currentChartData.data
+            },
+        ],
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                color: '#0d6efd',
+                text: 'Visual Representation of your Current Status',
+                font: {
+                    size: 16
+                }
+            },
+            legend: {
+                align: 'center',
+                // maxWidth: 300,
+                position: 'right',
+                labels: {
+                    padding: 15,
+                    // font: {
+                    //     size: 16
+                    // }
+                },
+
+            },
+            datalabels : {
+                color: "#ffffff",
+            },
+
+        },
+    },
+    plugins : [ChartDataLabels]
+});
+
     }
-</script>
-
-<script type="text/javascript">
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            ['Income', 'Distribution'],
-            ['Expenses', 15000],
-            ['Savings', 3000],
-            ['Debt Repayment', 3000],
-            ['Investments', 3000],
-            ['Entertainment', 6000]
-        ]);
-
-        var options = {
-            title: 'Ideal Financial Status',
-            pieHole: 0.3,
-            width: 500,
-            height: 300
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('idealStatus'));
-        chart.draw(data, options);
-    }
+    
+    graphics()
 </script>

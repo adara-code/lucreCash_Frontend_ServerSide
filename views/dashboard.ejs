@@ -20,7 +20,7 @@
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <p class="navbar-brand fs-3 ms-1 d-inline-block text-light ">Lucre &#8208; Cash</p>
                 <p class="text-light fs-5 ">Budget for your best life</p>
-                <button class="btn btn-sm btn-light me-1 mb-3 py-2 ps-3 pe-3" type="button">Log Out</button>
+                <button id="logout" onclick="logout()" class="btn btn-sm btn-light me-1 mb-3 py-2 ps-3 pe-3" type="button">Log Out</button>
             </div>
         </nav>
     </section>
@@ -49,7 +49,7 @@
                                     </div>
                         </div>
                         <div class="border rounded-2 ms-3 me-3 mt-4" style="height:390px; width: 520px;">
-                            <p class="display-6 fs-5 text-primary text-center pt-3 ps-3">Your Personal Income Statement
+                            <p class="display-6 fs-5 text-primary text-center pt-3 ps-3 fw-semibold">Your Personal Income Statement
                             </p>
                             <div class="d-flex justify-content-between my-2">
                                 <p class="ps-3">Personal Income </p>
@@ -86,7 +86,8 @@
                         <!-- <p class="text-primary text-center pb-2">Visual Representation of your Current Status</p> -->
                         <canvas id="currentStatus"></canvas>
                     </div>
-                    <div class="mt-3 ps-5 bg-dark" style=" height:286px">
+                    <hr>
+                    <div class="mt-3 ps-1" style=" height:286px">
                         <canvas id="idealStatus"></canvas>
                     </div>
                 </div>
@@ -102,7 +103,10 @@
 </html>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+    integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
     // create a base url that attaches a token to every request
     const url = 'http://localhost:3000'
     const accessToken = localStorage.getItem("key")
@@ -232,81 +236,166 @@
     }
     displayData()
 
+    // function gets data from the backend and returns the values, which are then dynamically added to the pie chart.
+    const currentFinancialStatus = () => {
+        const currentValues = frontAuth.get(`${url}/current`).then(rs => {
+            const currentDataArray = rs.data
+            const mappedData = currentDataArray.map(element => {
+                return Object.values(element)
+            });
+            //   console.log(currentChartData.data)
+            //   console.log(mp[0])
+            //   currentChartData.data = mp[0]
+            myChart.data.datasets[0].data = mappedData[0]
+            //   console.log(currentChartData.data[0])
+            // myChart.data.datasets[0].data = mp
+            // console.log(myChart.data.datasets[0].data)
 
-    const graphics = () => {
-        const vals = frontAuth.get(`${url}/graphics`).then(rs => {
-           const arr = rs.data
-           const mp = arr.map(element => {
-            return Object.values(element)
-            
-           });
-        //   console.log(currentChartData.data)
-        //   console.log(mp[0])
-        //   currentChartData.data = mp[0]
-          myChart.data.datasets[0].data = mp[0]
-        //   console.log(currentChartData.data[0])
-        // myChart.data.datasets[0].data = mp
-        console.log(myChart.data.datasets[0].data)
 
-       
-          myChart.update()
-        //    console.log(mp)
+            myChart.update()
+            //    console.log(mp)
+        }).catch(err => {
+            console.log(err)
         })
+
+
+
         // ChartJs Setup
-    const currentChart = document.getElementById('currentStatus');
+        const currentChart = document.getElementById('currentStatus');
 
-const currentChartData = {
-    labels: ["Expenses", "Debt", "Disposable Income"],
-    data: [30000,10000,5000],
-};
+        const currentChartData = {
+            labels: ["Expenses", "Debt", "Disposable Income"],
+            data: [30000, 10000, 5000],
+        };
 
 
-//    Chart configuration
-const myChart = new Chart(currentChart, {
-    type: "doughnut",
-    data: {
-        labels: currentChartData.labels,
-        datasets: [
-            {
-                label: "Financial Status",
-                data: currentChartData.data
+        //    Chart configuration
+        const myChart = new Chart(currentChart, {
+            type: "doughnut",
+            data: {
+                labels: currentChartData.labels,
+                datasets: [
+                    {
+                        label: "Financial Status",
+                        data: currentChartData.data
+                    },
+                ],
             },
-        ],
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                color: '#0d6efd',
-                text: 'Visual Representation of your Current Status',
-                font: {
-                    size: 16
-                }
-            },
-            legend: {
-                align: 'center',
-                // maxWidth: 300,
-                position: 'right',
-                labels: {
-                    padding: 15,
-                    // font: {
-                    //     size: 16
-                    // }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        color: '#0d6efd',
+                        text: 'Visual Representation of your Current Status',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        align: 'center',
+                        // maxWidth: 300,
+                        position: 'right',
+                        labels: {
+                            padding: 15,
+                            // font: {
+                            //     size: 16
+                            // }
+                        },
+
+                    },
+                    datalabels: {
+                        color: "#ffffff",
+                    },
+
                 },
-
             },
-            datalabels : {
-                color: "#ffffff",
-            },
-
-        },
-    },
-    plugins : [ChartDataLabels]
-});
+            plugins: [ChartDataLabels]
+        });
 
     }
-    
-    graphics()
+    currentFinancialStatus()
+
+
+// function returns the ideal way the user should allocate their income to different categories
+    const idealFinancialStatus = async (req, res) => {
+        const idealValues = frontAuth.get(`${url}/ideal`).then(rs => {
+            const idealDataArray = rs.data
+            const mappedData = idealDataArray.map(element => {
+                return Object.values(element)
+            });
+
+            secondChart.data.datasets[0].data = mappedData[0]
+
+            // console.log("ideal graph")
+            // console.log(secondChart.data.datasets[0].data)
+
+            secondChart.update()
+        }).catch(err => {
+            console.log(err)
+        })
+        
+
+        // the canva section in the html element where the chart will be populated.
+        const idealChart = document.getElementById('idealStatus');
+
+        //chart setup where the labels and hard-coded data are initialized
+        const idealChartData = {
+            labels: ["Expenses", "Savings", "Investments", "Debt", "Entertainment"],
+            data: [12750, 2550, 2550, 2550, 5100],
+        };
+
+
+        // chart configuration
+        const secondChart = new Chart(idealChart, {
+            type: "doughnut",
+            data: {
+                labels: idealChartData.labels,
+                datasets: [
+                    {
+                        label: "Financial Status",
+                        data: idealChartData.data
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        color: '#0d6efd',
+                        text: 'Ideally, how you should allocate your money',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        align: 'center',
+                        position: 'right',
+                        labels: {
+                            padding: 15,
+                        },
+
+                    },
+                    datalabels: {
+                        color: "#ffffff",
+                    },
+
+                },
+            },
+            // this allows for labels to be displayed inside the chart
+            plugins: [ChartDataLabels]
+        });
+    }
+
+    idealFinancialStatus()
+
+    // logout function
+    const logout = () => {
+        localStorage.clear()
+        window.location = '/login'
+    }
+
 </script>

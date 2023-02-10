@@ -25,11 +25,11 @@ An app for tracking finances that uses Axios to fetch data from the backend and 
 - express
 
 ## Snapshots of the project
-![alt text](https://github.com/adara-code/lucreCash_Frontend_ServerSide/blob/main/screenshots/screenshot1.png)
-
-
-
 ![alt text](https://github.com/adara-code/lucreCash_Frontend_ServerSide/blob/main/screenshots/screenshot2.png)
+
+
+
+![alt text](https://github.com/adara-code/lucreCash_Frontend_ServerSide/blob/main/screenshots/screenshot1.png)
 
 
 

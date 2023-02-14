@@ -1,7 +1,10 @@
 const express = require('express')
 const path = require('path')
+const dotenv = require('dotenv')
+
+dotenv.config()
 const app = express()
-const port = 4000
+const PORT = process.env.PORT || 4000
 
 
 //serves static files ie css, images and js
@@ -15,4 +18,4 @@ app.get('/signup', (req,res) => res.render("signup"))
 app.get('/login', (req,res) => res.render("login"))
 app.get('/dashboard', (req,res) => res.render("dashboard"))
 
-app.listen(port, () => console.log(`frontend server loading on port ${port}`))
+app.listen(PORT, () => console.log(`frontend server loading on port ${PORT}`))

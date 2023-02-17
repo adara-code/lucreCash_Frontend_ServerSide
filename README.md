@@ -1,7 +1,12 @@
 # Lucre Cash App 
 An app for tracking finances that uses Axios to fetch data from the backend and ejs to display to users their present financial situation and ideal financial situation given their current income.
 
-## How to run the app
+## Click the link below to test the deployed app 
+https://lucrecash.up.railway.app/ 
+
+Take note of your username and password as you will be re-directed to the login page
+
+## How to run the app on the local machine
 1. Fork or download the app 
 2. Navigate to the frontend folder
 3. Install all the dependencies using "npm i" command (see below for a list of the dependencies)

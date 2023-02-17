@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Dashboard</title>
@@ -19,7 +20,7 @@
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <p class="navbar-brand fs-3 ms-1 d-inline-block text-light ">Lucre &#8208; Cash</p>
                 <p class="text-light fs-5 ">Budget for your best life</p>
-                <button class="btn btn-sm btn-light me-1 mb-3 py-2 ps-3 pe-3" type="button">Log Out</button>
+                <button id="logout" onclick="logout()" class="btn btn-sm btn-light me-1 mb-3 py-2 ps-3 pe-3" type="button">Log Out</button>
             </div>
         </nav>
     </section>
@@ -29,16 +30,17 @@
     <section>
         <div class="container">
             <div class="row">
-                <div class="justify-content-center align-items-center">
-                    <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary"
-                        style="height: 610px;">
+                <div class="col-md-6 justify-content-center align-items-center">
+                    <div class="border rounded-2 mt-4 border-light-subtle bg-body-tertiary" style="height: 610px;">
                         <div id="userProfile" class="border bg-primary m-3 rounded-2"
                             style="height: 160px; width: 520px;">
                             <%- include ('partials/addModal') %>
                                 <%- include ('partials/editModal') %>
-                                    <p id="username" class="text-light text-center display-6 fs-3 pt-3 ps-3 text-capitalize"></p>
+                                    <p id="username"
+                                        class="text-light text-center display-6 fs-3 pt-3 ps-3 text-capitalize"></p>
                                     <p class="text-light text-center display-6 fs-6 pt-1 ps-3">Your Current Financial
-                                        Standing : <strong><span id="financialStatus"></strong</span></p>
+                                        Standing : <strong><span id="financialStatus"></span></strong>
+                                    </p>
                                     <div class="d-flex justify-content-center">
                                         <button class="btn btn-warning text-light me-5" id="addButton"
                                             data-bs-toggle="modal" data-bs-target="#addList">Add Item</button>
@@ -47,7 +49,7 @@
                                     </div>
                         </div>
                         <div class="border rounded-2 ms-3 me-3 mt-4" style="height:390px; width: 520px;">
-                            <p class="display-6 fs-5 text-primary text-center pt-3 ps-3">Your Personal Income Statement
+                            <p class="display-6 fs-5 text-primary text-center pt-3 ps-3 fw-semibold">Your Personal Income Statement
                             </p>
                             <div class="d-flex justify-content-between my-2">
                                 <p class="ps-3">Personal Income </p>
@@ -77,6 +79,18 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Graphical Presentation -->
+                <div class="col-md-6 border rounded-2 mt-4 border-light-subtle bg-body-tertiary">
+                    <div class="mt-3 ps-1 py-2 " style="height: 290px;">
+                        <!-- <p class="text-primary text-center pb-2">Visual Representation of your Current Status</p> -->
+                        <canvas id="currentStatus"></canvas>
+                    </div>
+                    <hr>
+                    <div class="mt-3 ps-1" style=" height:286px">
+                        <canvas id="idealStatus"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -88,6 +102,10 @@
 
 </html>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+    integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     const url = 'https://lucrecash-api.up.railway.app'
     const accessToken = localStorage.getItem("key")
@@ -99,7 +117,7 @@
         }
     })
 
-    // This function takes input from the "addModal" file. And posts them on the add end-point. 
+    // This function takes input from the "addModal" file. And posts them on the /add end-point. 
     // Data validation is incorporated and user redirected to the dashboard. 
     const addForm = () => {
         const addedIncome = document.getElementById('addNetIncome').value
@@ -136,6 +154,7 @@
         })
     }
 
+    // takes values from the edit modal and posts them to the /edit endpoint
     const editForm = () => {
         const editedIncome = document.getElementById('editNetIncome').value
         const editedBills = document.getElementById('editBills').value
@@ -172,51 +191,210 @@
         })
     }
 
-    
-
+    // displays data on the dashboard
     const displayData = () => {
         frontAuth.post(`${url}/dashboard`).then(rs => {
-        const showUsername = document.getElementById('username')
-        const showIncome = document.getElementById('displayIncome')
-        const showBills = document.getElementById('displayBills')
-        const showDebt = document.getElementById('displayDebt')
-        const showDI = document.getElementById('displayDisposableIncome')
-        
+            // targets the divs that display each financial item
+            const showUsername = document.getElementById('username')
+            const showIncome = document.getElementById('displayIncome')
+            const showBills = document.getElementById('displayBills')
+            const showDebt = document.getElementById('displayDebt')
+            const showDI = document.getElementById('displayDisposableIncome')
 
-        const financialStatus = document.getElementById('financialStatus')
-        const status = document.getElementById('status')
 
-        showUsername.innerHTML = `Hello ${rs.data[0].username}`
-        showIncome.innerHTML =`Kshs. ${parseFloat(rs.data[0].totalIncome)}`
-        showBills.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalExpenses)}`
-        showDebt.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalDebt)}`
+            // targets the div from the profile section and from the disposable income area
+            const financialStatus = document.getElementById('financialStatus')
+            const status = document.getElementById('status')
 
-        if(rs.data[0].disposableIncome == 0){
-            financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-4" style="color:#ffa500"></i> Average`
-            showDI.innerHTML = `<span style="color:orange">Kshs. ${parseFloat(rs.data[0].disposableIncome)}</span>`
-            status.innerHTML = `<p style = "color:orange; text-align:center">Your income and expenses are equal. Reduce expenses or increase your income.</p>`
+            // writes values received from backend
+            showUsername.innerHTML = `Hello ${rs.data[0].username}`
+            showIncome.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalIncome)}`
+            showBills.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalExpenses)}`
+            showDebt.innerHTML = `Kshs. ${parseFloat(rs.data[0].totalDebt)}`
 
-        } else if(rs.data[0].disposableIncome < 0){
-            financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-5" style="color:#ff4433"></i> On the Red`
-            showDI.innerHTML = `<span style="color:red">Negative</span>`
-            status.innerHTML = `<p style = "color:red; text-align:center">No disposable income. Readjust your expenses.</p>`
+            if (rs.data[0].disposableIncome == 0) {
+                financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-4" style="color:#ffa500"></i> Average`
+                showDI.innerHTML = `<span style="color:orange">Kshs. ${parseFloat(rs.data[0].disposableIncome)}</span>`
+                status.innerHTML = `<p style = "color:orange; text-align:center">Your income and expenses are equal. Reduce expenses or increase your income.</p>`
 
-        } else {
-            financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-5" style="color:#90ee90"></i> Good`
-            showDI.innerHTML = `<span style="color:green">Kshs. ${parseFloat(rs.data[0].disposableIncome)}</span>`
-            status.innerHTML = `<p style = "color:green; text-align:center">You have enough to save.</p>`
+            } else if (rs.data[0].disposableIncome < 0) {
+                financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-5" style="color:#ff4433"></i> On the Red`
+                showDI.innerHTML = `<span style="color:red">Negative</span>`
+                status.innerHTML = `<p style = "color:red; text-align:center">No disposable income. Readjust your expenses.</p>`
 
-        }
-        // showDI.innerHTML = `Kshs. ${parseFloat(rs.data[0].disposableIncome)}`
+            } else {
+                financialStatus.innerHTML = `<i class="bi bi-circle-fill fs-5" style="color:#90ee90"></i> Good`
+                showDI.innerHTML = `<span style="color:green">Kshs. ${parseFloat(rs.data[0].disposableIncome)}</span>`
+                status.innerHTML = `<p style = "color:green; text-align:center">You have enough to save.</p>`
 
-        console.log(rs)
+            }
 
-    }).catch(err => {
-        console.log(err)
-    })
+        }).catch(err => {
+            console.log(err)
+        })
     }
     displayData()
-    
-    // console.log(result)
+
+    // function gets data from the backend and returns the values, which are then dynamically added to the pie chart.
+    const currentFinancialStatus = () => {
+        const currentValues = frontAuth.get(`${url}/current`).then(rs => {
+            const currentDataArray = rs.data
+            const mappedData = currentDataArray.map(element => {
+                return Object.values(element)
+            });
+            //   console.log(currentChartData.data)
+            //   console.log(mp[0])
+            //   currentChartData.data = mp[0]
+            myChart.data.datasets[0].data = mappedData[0]
+            //   console.log(currentChartData.data[0])
+            // myChart.data.datasets[0].data = mp
+            // console.log(myChart.data.datasets[0].data)
+
+
+            myChart.update()
+            //    console.log(mp)
+        }).catch(err => {
+            console.log(err)
+        })
+
+
+
+        // ChartJs Setup
+        const currentChart = document.getElementById('currentStatus');
+
+        const currentChartData = {
+            labels: ["Expenses", "Debt", "Disposable Income"],
+            data: [30000, 10000, 5000],
+        };
+
+
+        //    Chart configuration
+        const myChart = new Chart(currentChart, {
+            type: "doughnut",
+            data: {
+                labels: currentChartData.labels,
+                datasets: [
+                    {
+                        label: "Financial Status",
+                        data: currentChartData.data
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        color: '#0d6efd',
+                        text: 'Visual Representation of your Current Status',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        align: 'center',
+                        // maxWidth: 300,
+                        position: 'right',
+                        labels: {
+                            padding: 15,
+                            // font: {
+                            //     size: 16
+                            // }
+                        },
+
+                    },
+                    datalabels: {
+                        color: "#ffffff",
+                    },
+
+                },
+            },
+            plugins: [ChartDataLabels]
+        });
+
+    }
+    currentFinancialStatus()
+
+
+// function returns the ideal way the user should allocate their income to different categories
+    const idealFinancialStatus = async (req, res) => {
+        const idealValues = frontAuth.get(`${url}/ideal`).then(rs => {
+            const idealDataArray = rs.data
+            const mappedData = idealDataArray.map(element => {
+                return Object.values(element)
+            });
+
+            secondChart.data.datasets[0].data = mappedData[0]
+
+            // console.log("ideal graph")
+            // console.log(secondChart.data.datasets[0].data)
+
+            secondChart.update()
+        }).catch(err => {
+            console.log(err)
+        })
+        
+
+        // the canva section in the html element where the chart will be populated.
+        const idealChart = document.getElementById('idealStatus');
+
+        //chart setup where the labels and hard-coded data are initialized
+        const idealChartData = {
+            labels: ["Expenses", "Savings", "Investments", "Debt", "Entertainment"],
+            data: [12750, 2550, 2550, 2550, 5100],
+        };
+
+
+        // chart configuration
+        const secondChart = new Chart(idealChart, {
+            type: "doughnut",
+            data: {
+                labels: idealChartData.labels,
+                datasets: [
+                    {
+                        label: "Financial Status",
+                        data: idealChartData.data
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        color: '#0d6efd',
+                        text: 'Ideally, how you should allocate your money',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        align: 'center',
+                        position: 'right',
+                        labels: {
+                            padding: 15,
+                        },
+
+                    },
+                    datalabels: {
+                        color: "#ffffff",
+                    },
+
+                },
+            },
+            // this allows for labels to be displayed inside the chart
+            plugins: [ChartDataLabels]
+        });
+    }
+
+    idealFinancialStatus()
+
+    // logout function
+    const logout = () => {
+        localStorage.clear()
+        window.location = '/login'
+    }
 
 </script>

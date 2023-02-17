@@ -29,6 +29,10 @@ Take note of your username and password as you will be re-directed to the login 
 - ejs
 - express
 
+## Future Features
+- Make the app responsive for all screens
+- Customize the app for other browsers other than Chrome
+
 ## Snapshots of the project
 ![alt text](https://github.com/adara-code/lucreCash_Frontend_ServerSide/blob/main/screenshots/screenshot2.png)
 

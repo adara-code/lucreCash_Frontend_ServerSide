@@ -30,7 +30,7 @@ Take note of your username and password as you will be re-directed to the login 
 - express
 
 ## Future Features
-- Make the app responsive for all screens
+- Make the app responsive for small screens i.e ipads
 - Customize the app for other browsers other than Chrome
 
 ## Snapshots of the project

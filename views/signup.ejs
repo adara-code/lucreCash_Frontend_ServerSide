@@ -106,38 +106,39 @@
             const inputPassword = document.getElementById('signup-password').value
 
             axios.post(`https://lucrecash-api.up.railway.app/signup`, {
-                fullnames: inputFullnames,
+                // fullnames: inputFullnames,
                 username: inputUsername,
                 email: inputEmail,
-                password: inputPassword
+                // password: inputPassword
             }).then((result) => {
-                const info = result.data[0].message
                 console.log(result)
-                console.log(result.data[0].message)
-                if (result.data[0].message == '"fullnames" length must be at least 5 characters long' || result.data[0].message == '"fullnames" is not allowed to be empty') {
-                    Swal.fire(`${info}`)
-                } else if (result.data[0].message == '"username" length must be at least 3 characters long' || result.data[0].message == '"username" is not allowed to be empty') {
-                    Swal.fire(`${info}`)
-                } else if (result.data[0].message == '"email" must be a valid email' || result.data[0].message == '"email" is not allowed to be empty') {
-                    Swal.fire(`${info}`)
-                } else if (result.data[0].message == '"password" length must be at least 5 characters long' || result.data[0].message == '"password" is not allowed to be empty') {
-                    Swal.fire(`${info}`)
-                } else if (result.data[0].message == 'Email already exists') {
-                    Swal.fire(`${info}`)
-                } else if (result.data[0].message == 'Username taken') {
-                    Swal.fire(`${info}`)
-                } else {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Registration Successful. Enjoy!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(result => {
-                            window.location = '/login'
-                        }).catch(err => {
-                            console.log(err)
-                        })
-                }
+                // const info = result.data[0].message
+                // console.log(result)
+                // console.log(result.data[0].message)
+                // if (result.data[0].message == '"fullnames" length must be at least 5 characters long' || result.data[0].message == '"fullnames" is not allowed to be empty') {
+                //     Swal.fire(`${info}`)
+                // } else if (result.data[0].message == '"username" length must be at least 3 characters long' || result.data[0].message == '"username" is not allowed to be empty') {
+                //     Swal.fire(`${info}`)
+                // } else if (result.data[0].message == '"email" must be a valid email' || result.data[0].message == '"email" is not allowed to be empty') {
+                //     Swal.fire(`${info}`)
+                // } else if (result.data[0].message == '"password" length must be at least 5 characters long' || result.data[0].message == '"password" is not allowed to be empty') {
+                //     Swal.fire(`${info}`)
+                // } else if (result.data[0].message == 'Email already exists') {
+                //     Swal.fire(`${info}`)
+                // } else if (result.data[0].message == 'Username taken') {
+                //     Swal.fire(`${info}`)
+                // } else {
+                //     Swal.fire({
+                //         icon: 'success',
+                //         title: 'Registration Successful. Enjoy!',
+                //         showConfirmButton: false,
+                //         timer: 1500
+                //     }).then(result => {
+                //             window.location = '/login'
+                //         }).catch(err => {
+                //             console.log(err)
+                //         })
+                // }
 
             }).catch((err) => {
                 console.log(err)
